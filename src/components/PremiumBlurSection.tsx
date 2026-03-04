@@ -1,6 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { TarotCardData } from "@/data/cards";
+import { isAuthed } from "@/lib/demoAuth";
 
 interface PremiumBlurSectionProps {
   card: TarotCardData | null;
@@ -11,6 +13,16 @@ export default function PremiumBlurSection({
   card,
   visible,
 }: PremiumBlurSectionProps) {
+  const router = useRouter();
+
+  const handlePremiumClick = () => {
+    if (isAuthed()) {
+      router.push("/checkout");
+    } else {
+      router.push("/login");
+    }
+  };
+
   if (!visible || !card) return null;
 
   return (
@@ -94,7 +106,9 @@ export default function PremiumBlurSection({
               </p>
 
               {/* Payment button */}
-              <button className="group relative px-8 py-3.5 rounded-full font-medium transition-all duration-500 cursor-pointer
+              <button
+                onClick={handlePremiumClick}
+                className="group relative px-8 py-3.5 rounded-full font-medium transition-all duration-500 cursor-pointer
                 bg-gradient-to-r from-gold-dim via-gold to-gold-dim
                 text-purple-deep hover:scale-105
                 glow-gold hover:shadow-[0_0_40px_rgba(212,175,55,0.5)]">
